@@ -1,4 +1,4 @@
-import deviceDataModel from "../models/deviceModel.js";
+import deviceModel from "../models/deviceModel.js";
 
 export const testController = async (req, res) => {
     try {
@@ -17,7 +17,7 @@ export const testController = async (req, res) => {
 
 export const allDataController = async (req, res) => {
     try {
-        const allData = await deviceDataModel.find({});
+        const allData = await deviceModel.find({});
         res.send({
             success: true,
             message: "All Data Sent Successfully",
@@ -35,7 +35,7 @@ export const allDataController = async (req, res) => {
 export const sendDataController = async (req, res) => {
     try {
         const received = req.body;
-        const deviceData = new deviceDataModel(received);
+        const deviceData = new deviceModel(received);
         await deviceData.save();
 
         res.send({
