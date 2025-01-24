@@ -1,48 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { io } from "socket.io-client";
 
 const SocketIOClient = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
+  const socketRef = useRef(null);
 
   useEffect(() => {
-    const socket = io(process.env.REACT_APP_SERVER_URL);
-    console.log(process.env.REACT_APP_SERVER_URL, socket);
+    // Create and store the socket instance
+    socketRef.current = io(process.env.REACT_APP_SERVER_URL);
+
+    console.log(process.env.REACT_APP_SERVER_URL, socketRef.current);
 
     // Log successful connection
-    socket.on("connect", () => {
+    socketRef.current.on("connect", () => {
       console.log("Connected to WebSocket Server");
 
-      // Create a sample data object
       const data = {
-        deviceId: "deviceSomeRandomFromClient",
-        energy: 320,
-        channel1: false,
-        channel2: true,
-        channel3: true,
-        channel4: true
+        "deviceId": "deviceSomeRandomFromClient",
+        "energy": 320,
+        "channel1": false,
+        "channel2": true,
+        "channel3": true,
+        "channel4": true,
       };
 
-      // Stringify the message data before sending
-      socket.emit("message", JSON.stringify(data));
+      socketRef.current.emit("message", JSON.stringify(data));
+      console.log(JSON.stringify(data))
     });
 
     // Listen for incoming messages
-    socket.on("message", (message) => {
+    socketRef.current.on("message", (message) => {
       setMessages((prevMessages) => [...prevMessages, `Server: ${message}`]);
     });
 
+    // Cleanup on component unmount
     return () => {
-      socket.disconnect();
+      console.log("Disconnecting from Server!");
+      socketRef.current.disconnect();
     };
   }, []);
 
   const sendMessage = () => {
     if (newMessage.trim()) {
-      const socket = io(process.env.REACT_APP_SERVER_URL);
-
-      // Stringify the message before sending
-      socket.emit("message", JSON.stringify({ content: newMessage }));
+      // Use the persistent socket instance
+      const stringObject = JSON.stringify(JSON.parse(newMessage));
+      socketRef.current.emit("message", stringObject);
+      console.log(stringObject);
       setMessages((prevMessages) => [...prevMessages, `You: ${newMessage}`]);
       setNewMessage("");
     }

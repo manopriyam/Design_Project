@@ -1,4 +1,4 @@
-import express from "express";
+import express, { text } from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
@@ -47,9 +47,9 @@ io.on('connection', (socket) => {
     console.log(`Currently Connected : ${io.engine.clientsCount} Clients`);
 
     // Listen for messages from the client
-    socket.on('message', async (message) => {
-        const textMessage = message.toString('utf-8');
-        
+    socket.on('message', async (message) => {   
+        const textMessage = message.toString('utf-8'); 
+
         try {
             const deviceData = JSON.parse(textMessage);
             const newDevice = new deviceModel(deviceData);
@@ -63,7 +63,9 @@ io.on('connection', (socket) => {
 
     // Handle client disconnection
     socket.on('disconnect', () => {
+        socket.emit('message', 'Client Disconnected from the Server!');
         console.log('Connection Closed.');
+        console.log(`Currently Connected : ${io.engine.clientsCount} Clients`);
     });
 
     // Send initial message to the client
