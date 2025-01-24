@@ -35,7 +35,7 @@ const PORT = process.env.PORT || 8080;
 
 // start HTTP server
 const server = app.listen(PORT, () => {
-    console.log(`Server Running on ${process.env.DEV_MODE} Mode at Port ${PORT}`);
+    console.log(`Server Running on ${process.env.DEV_MODE} Mode`);
 });
 
 // Setup Socket.IO server
