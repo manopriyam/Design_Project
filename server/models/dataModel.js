@@ -1,42 +1,34 @@
 import mongoose from 'mongoose';
 
-const deviceSchema = new mongoose.Schema({
+const dataSchema = new mongoose.Schema({
     deviceId: {
         type: String,
         required: true,
         trim: true,
-        unique: true,
     },
-    totalEnergy: {
+    energy: {
         type: Number,
         required: true,
+        default: 0,
+        min: 0,
     },
-    currentChannel1: {
+    channel1: {
         type: Boolean,
         required: true,
     },
-    currentChannel2: {
+    channel2: {
         type: Boolean,
         required: true,
     },
-    currentChannel3: {
+    channel3: {
         type: Boolean,
         required: true,
     },
-    currentChannel4: {
-        type: Boolean,
-        required: true,
-    },
-    isPico: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    isActive: {
+    channel4: {
         type: Boolean,
         required: true,
     },
 }, { timestamps: true }); 
 
 // Exporting the model created from the schema
-export default mongoose.model('device', deviceSchema);
+export default mongoose.model('data', dataSchema);

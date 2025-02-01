@@ -7,7 +7,7 @@ const WebSocketClient = () => {
 
   useEffect(() => {
     // Initialize WebSocket connection
-    socketRef.current = new WebSocket(process.env.REACT_APP_SERVER_URL);
+    socketRef.current = new WebSocket(process.env.REACT_APP_WEBSOCKET_SERVER_URL);
 
     // Log successful connection
     socketRef.current.onopen = () => {
