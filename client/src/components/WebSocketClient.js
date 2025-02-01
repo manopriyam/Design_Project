@@ -1,19 +1,16 @@
 import React, { useEffect, useState, useRef } from "react";
-import { io } from "socket.io-client";
 
-const SocketIOClient = () => {
+const WebSocketClient = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const socketRef = useRef(null);
 
   useEffect(() => {
-    // Create and store the socket instance
-    socketRef.current = io(process.env.REACT_APP_SERVER_URL);
-
-    console.log(process.env.REACT_APP_SERVER_URL, socketRef.current);
+    // Initialize WebSocket connection
+    socketRef.current = new WebSocket(process.env.REACT_APP_SERVER_URL);
 
     // Log successful connection
-    socketRef.current.on("connect", () => {
+    socketRef.current.onopen = () => {
       console.log("Connected to WebSocket Server");
 
       const data = {
@@ -25,28 +22,39 @@ const SocketIOClient = () => {
         "channel4": true,
       };
 
-      socketRef.current.emit("message", JSON.stringify(data));
-      console.log(JSON.stringify(data))
-    });
+      socketRef.current.send(JSON.stringify(data));
+      console.log("Sent:", JSON.stringify(data));
+    };
 
     // Listen for incoming messages
-    socketRef.current.on("message", (message) => {
-      setMessages((prevMessages) => [...prevMessages, `Server: ${message}`]);
-    });
+    socketRef.current.onmessage = (event) => {
+      setMessages((prevMessages) => [...prevMessages, `Server: ${event.data}`]);
+    };
+
+    // Handle WebSocket errors
+    socketRef.current.onerror = (error) => {
+      console.error("WebSocket Error:", error);
+    };
+
+    // Handle WebSocket close
+    socketRef.current.onclose = () => {
+      console.log("WebSocket connection closed");
+    };
 
     // Cleanup on component unmount
     return () => {
-      console.log("Disconnecting from Server!");
-      socketRef.current.disconnect();
+      console.log("Disconnecting from WebSocket Server!");
+      if (socketRef.current) {
+        socketRef.current.close();
+      }
     };
   }, []);
 
   const sendMessage = () => {
     if (newMessage.trim()) {
-      // Use the persistent socket instance
       const stringObject = JSON.stringify(JSON.parse(newMessage));
-      socketRef.current.emit("message", stringObject);
-      console.log(stringObject);
+      socketRef.current.send(stringObject);
+      console.log("Sent:", stringObject);
       setMessages((prevMessages) => [...prevMessages, `You: ${newMessage}`]);
       setNewMessage("");
     }
@@ -54,7 +62,7 @@ const SocketIOClient = () => {
 
   return (
     <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h2>Socket.IO Communication</h2>
+      <h2>WebSocket Communication</h2>
       <div
         style={{
           border: "1px solid #ccc",
@@ -86,4 +94,4 @@ const SocketIOClient = () => {
   );
 };
 
-export default SocketIOClient;
+export default WebSocketClient;

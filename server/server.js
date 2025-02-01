@@ -1,9 +1,9 @@
-import express, { text } from "express";
+import express from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
-import { Server as SocketIOServer } from "socket.io";
+import { WebSocketServer } from "ws";
 
 // importing from files
 import connectDB from "./config/db.js"; 
@@ -38,16 +38,16 @@ const server = app.listen(PORT, () => {
     console.log(`Server Running on ${process.env.DEV_MODE} Mode`);
 });
 
-// Setup Socket.IO server
-const io = new SocketIOServer(server, {cors: {origin: "*"}});
+// Setup WebSocket server
+const wss = new WebSocketServer({ server });
 
-// handle Socket.IO connections
-io.on('connection', (socket) => {
-    console.log('New Client-Server Connection Established.');
-    console.log(`Currently Connected : ${io.engine.clientsCount} Clients`);
+// handle WebSocket connections
+wss.on('connection', (ws) => {
+    console.log('New WebSocket Client Connected.');
+    console.log(`Currently Connected : ${wss.clients.size} Clients`);
 
     // Listen for messages from the client
-    socket.on('message', async (message) => {   
+    ws.on('message', async (message) => {   
         const textMessage = message.toString('utf-8'); 
 
         try {
@@ -55,21 +55,20 @@ io.on('connection', (socket) => {
             const newDevice = new deviceModel(deviceData);
             await newDevice.save();
             console.log('New Device Data Added:\n', newDevice);
-            socket.emit('message', `Data Received by Server: ${JSON.stringify(deviceData)}`);
+            ws.send(`Data Received by Server: ${JSON.stringify(deviceData)}`);
         } catch (error) {
             console.error(error);
         }
     });
 
     // Handle client disconnection
-    socket.on('disconnect', () => {
-        socket.emit('message', 'Client Disconnected from the Server!');
+    ws.on('close', () => {
         console.log('Connection Closed.');
-        console.log(`Currently Connected : ${io.engine.clientsCount} Clients`);
+        console.log(`Currently Connected : ${wss.clients.size} Clients`);
     });
 
     // Send initial message to the client
-    socket.emit('message', 'Client Successfully Connected to the Server!');
+    ws.send('Client Successfully Connected to the Server!');
 });
 
 export default app;
