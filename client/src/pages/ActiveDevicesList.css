@@ -1,4 +1,4 @@
-/* src/assets/ActiveDevicesList.css */
+/* src/assets/ActiveDevicesList.css
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -55,4 +55,98 @@ body {
     color: #333;
     margin-bottom: 15px;
   }
-  
+   */
+
+
+body {
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+  color: white;
+}
+
+header {
+  background: linear-gradient(90deg, #222, #444);
+  color: white;
+  padding: 15px;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.device-table-container {
+  width: 85%;
+  margin: 30px auto;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
+}
+
+.device-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.device-table th, .device-table td {
+  padding: 12px 15px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+th {
+  background: linear-gradient(90deg, #444, #666);
+  color: white;
+  font-size: 1.1rem;
+}
+
+tr:nth-child(even) {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+tr:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transition: 0.3s ease-in-out;
+}
+
+h2 {
+  font-size: 26px;
+  color: #f0f0f0;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.device-table a {
+  color: #00d4ff;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease-in-out;
+}
+
+.device-table a:hover {
+  color: #ff0077;
+  text-shadow: 0 0 5px rgba(255, 0, 119, 0.8);
+}
+
+button {
+  background: linear-gradient(90deg, #ff0077, #ff3d00);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #ff3d00, #ff0077);
+  box-shadow: 0 0 10px rgba(255, 61, 0, 0.6);
+}

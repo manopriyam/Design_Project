@@ -14,7 +14,7 @@ const WebSocketClient = () => {
       console.log("Connected to WebSocket Server");
 
       const data = {
-        "deviceId": "deviceSomeRandomFromClient",
+        "deviceId": "abc",
         "energy": 320,
         "channel1": false,
         "channel2": true,

@@ -44,10 +44,32 @@ const server = app.listen(PORT, () => {
 // Setup WebSocket server
 const wss = new WebSocketServer({ server });
 
+///////////////////////////
+setInterval(() => {
+    wss.clients.forEach((ws) => {
+        if (ws.isAlive === false) {
+            console.log(`Closing inactive connection for device: ${ws.deviceId}`);
+            return ws.terminate();
+        }
+
+        ws.isAlive = false; // Assume client is dead until it responds
+        ws.ping(); // Send ping
+    });
+}, 30000);
+
+///////////////////////////
+
 // handle WebSocket connections
 wss.on("connection", (ws) => {
     console.log("New WebSocket Client Connected.");
     console.log(`Currently Connected : ${wss.clients.size} Clients`);
+
+    ws.isAlive = true;
+
+    ws.on("pong", () => 
+    {
+        ws.isAlive = true; // Mark client as alive
+    });
 
   // Listen for messages from the client
     ws.on("message", async (message) => {
@@ -64,7 +86,7 @@ wss.on("connection", (ws) => {
 
             const existingDevice = await deviceModel.findOne({ deviceId: data.deviceId });
             if (existingDevice) {
-                existingDevice.totalEnergy += data.energy;
+                existingDevice.totalEnergy = data.energy;
                 existingDevice.currentChannel1 = data.channel1;
                 existingDevice.currentChannel2 = data.channel2;
                 existingDevice.currentChannel3 = data.channel3;

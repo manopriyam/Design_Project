@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ActiveDevicesList.css"
+import { Link } from "react-router-dom";
 
 const ActiveDevicesList = () => {
   const [devices, setDevices] = useState([]);
@@ -23,36 +24,74 @@ const ActiveDevicesList = () => {
     fetchActiveDevices();
   }, []);
 
-  return (
-    <div className="device-table-container">
-      <h2>Active Devices</h2>
-      <table className="device-table">
-        <thead>
-          <tr>
-            <th>Device ID</th>
-            <th>Total Energy</th>
-            <th>Current Channels</th>
-            <th>Status</th>
+//   return (
+//     <div className="device-table-container">
+//       <h2>Active Devices</h2>
+//       <table className="device-table">
+//         <thead>
+//           <tr>
+//             <th>Device ID</th>
+//             <th>Total Energy</th>
+//             <th>Current Channels</th>
+//             <th>Status</th>
+//           </tr>
+//         </thead>
+//         <tbody>
+//           {devices.map((device) => 
+//           // (device.isActive && 
+//             (
+//               <tr key={device.deviceId}>
+//                 <td>{device.deviceId}</td>
+//                 <td>{device.totalEnergy}</td>
+//                 <td>
+//                   {device.currentChannel1}, {device.currentChannel2}, 
+//                   {device.currentChannel3}, {device.currentChannel4}
+//                 </td>
+//                 <td>{device.isActive ? "Active" : "Inactive"}</td>
+//               </tr>
+//             )
+//           // )
+//           )}
+//         </tbody>
+//       </table>
+//     </div>
+//   );
+// };
+
+return (
+  <div className="device-table-container">
+    <h2>🚀 Active Devices</h2>
+    <table className="device-table">
+      <thead>
+        <tr>
+          <th>Device ID</th>
+          <th>Total Energy</th>
+          <th>Current Channels</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {devices.map((device) => (
+          <tr key={device.deviceId}>
+            <td>
+              <Link to={`/device/${device.deviceId}`}>
+                {device.deviceId}
+              </Link>
+            </td>
+            <td>{device.totalEnergy}</td>
+            <td>
+              {device.currentChannel1 ? "ON" : "OFF"}, 
+              {device.currentChannel2 ? "ON" : "OFF"}, 
+              {device.currentChannel3 ? "ON" : "OFF"}, 
+              {device.currentChannel4 ? "ON" : "OFF"}
+            </td>
+            <td>{device.isActive ? "✅ Active" : "❌ Inactive"}</td>
           </tr>
-        </thead>
-        <tbody>
-          {devices.map((device) => (
-            device.isActive && (
-              <tr key={device.deviceId}>
-                <td>{device.deviceId}</td>
-                <td>{device.totalEnergy}</td>
-                <td>
-                  {device.currentChannel1}, {device.currentChannel2}, 
-                  {device.currentChannel3}, {device.currentChannel4}
-                </td>
-                <td>{device.isActive ? "Active" : "Inactive"}</td>
-              </tr>
-            )
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
+        ))}
+      </tbody>
+    </table>
+  </div>
+);
 };
 
 export default ActiveDevicesList;
