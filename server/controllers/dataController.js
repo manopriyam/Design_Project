@@ -51,3 +51,29 @@ export const sendDataController = async (req, res) => {
     });
   }
 };
+
+export const statisticsDataController = async(req,res) => {
+  try {
+    const { deviceId } = req.params;  
+    const statistics = await dataModel.find({ deviceId }).select("createdAt energy -_id"); 
+        
+    if (!statistics) {
+      return res.status(404).send({
+        success: false,
+        message: "Statistics Not Found",
+      });
+    }
+
+    res.send({
+      success: true,
+      message: "Statistics Sent Successfully",
+      statistics,
+    });
+  }  catch (error) {
+      res.send({
+        success: false,
+        message: "Error in Statistics Data Controller",
+        error, 
+    });
+  }
+};

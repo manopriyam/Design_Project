@@ -1,0 +1,8 @@
+{
+    "deviceId": "abc",
+    "energy": "400",
+    "channel1": false,
+    "channel2": true,
+    "channel3": false,
+    "channel4": true
+}

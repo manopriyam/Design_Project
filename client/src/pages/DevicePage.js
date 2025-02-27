@@ -4,6 +4,7 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import "./DevicePage.css";
+import RealTimeStatistics from "../components/RealTimeStatistics";
 
 const DevicePage = () => {
   const { deviceId } = useParams();
@@ -56,8 +57,8 @@ const DevicePage = () => {
         instruction
       );
       if (response.data.success) {
+        console.log(instruction);
         toast.success("Instruction Sent Successfully!");
-        // Update device state on successful instruction
         setDevice((prevDevice) => ({
           ...prevDevice,
           currentChannel1: updatedState.setChannel1,
@@ -74,21 +75,38 @@ const DevicePage = () => {
     }
   };
 
-  useEffect(() => {
-    handleToggle({ setChannel1, setChannel2, setChannel3, setChannel4 });
-  }, [setChannel1, setChannel2, setChannel3, setChannel4]);
-
-  const handleSwitchChange = (channel) => {
-    if (channel === "setChannel1") setSetChannel1(!setChannel1);
-    if (channel === "setChannel2") setSetChannel2(!setChannel2);
-    if (channel === "setChannel3") setSetChannel3(!setChannel3);
-    if (channel === "setChannel4") setSetChannel4(!setChannel4);
+  const handleSwitchChange = (setChannel) => {
+    const updatedState = {
+      setChannel1: setChannel1,
+      setChannel2: setChannel2,
+      setChannel3: setChannel3,
+      setChannel4: setChannel4,
+    };
+  
+    if (setChannel === "setChannel1") {
+      setSetChannel1(!setChannel1);
+      updatedState.setChannel1 = !setChannel1;
+    }
+    if (setChannel === "setChannel2") {
+      setSetChannel2(!setChannel2);
+      updatedState.setChannel2 = !setChannel2;
+    }
+    if (setChannel === "setChannel3") {
+      setSetChannel3(!setChannel3);
+      updatedState.setChannel3 = !setChannel3;
+    }
+    if (setChannel === "setChannel4") {
+      setSetChannel4(!setChannel4);
+      updatedState.setChannel4 = !setChannel4;
+    }
+  
+    handleToggle(updatedState);
   };
 
   return (
     <div className="device-page-container">
       <h2>Device: {device.deviceId}</h2>
-
+      <RealTimeStatistics deviceId={device.deviceId}/>
       <div className="device-layout">
         <div className="device-stats">
           <h3>Device Statistics</h3>

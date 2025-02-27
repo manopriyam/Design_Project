@@ -1,3 +1,5 @@
 ## To Do List
 
-- Error in Frontend in client > src > pages > DevicePage.js
+- Data Points Individual Increment in Energy
+- Charts Refresh Rate Setting
+- UI Improvements
