@@ -4,6 +4,11 @@
     background: var(--secondary-bg-color);
     padding: var(--container-padding);
     border-radius: var(--container-border-radius);
+
+    overflow-x: auto; 
+    max-width: 100%;
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For IE/Edge */
 }
 
 .active-device-table-header {
@@ -15,6 +20,7 @@
 .active-device-table {
   width: 100%;
   border-collapse: collapse;
+  white-space: nowrap; 
 }
 
 .active-device-table th {

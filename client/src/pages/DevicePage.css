@@ -6,6 +6,7 @@
     border-radius: var(--container-border-radius);
 
     display:flex; 
+    flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
 }
@@ -63,4 +64,8 @@
   font-size: var(--tertiary-font-size);
   color: var(--tertiary-font-color);
   text-align: center;
+}
+
+.slider-switch {
+  width: 60px;
 }

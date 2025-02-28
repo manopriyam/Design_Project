@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./ActiveDevicesList.css";
+import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
+
+import "./ActiveDevicesList.css";
 
 const ActiveDevicesList = () => {
   const [devices, setDevices] = useState([]);
@@ -12,10 +14,12 @@ const ActiveDevicesList = () => {
         if (response.ok) {
           const data = await response.json();
           setDevices(data.allDevice);
-        } else {
-          console.error("Error fetching devices data");
+          toast.success("Device List Updated!");
+        } else {          
+          toast.error("Error Fetching Device List!");
         }
       } catch (error) {
+        toast.error("Error Fetching Device List!");
         console.error("Error:", error);
       }
     };
@@ -59,7 +63,8 @@ const ActiveDevicesList = () => {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table>      
+      <ToastContainer hideProgressBar autoClose={process.env.REACT_APP_TOAST_DURATION * 1000 || 5000} />    
     </div>
   );
 };

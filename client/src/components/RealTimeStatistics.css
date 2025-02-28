@@ -1,7 +1,7 @@
 .stats-chart-container {
     width: var(--container-width);
     /* margin: var(--container-margin); */
-    background: var(--secondary-bg-color);
+    background-color: var(--secondary-bg-color);
     padding: var(--container-padding);
     border-radius: var(--container-border-radius);
 }
@@ -13,13 +13,19 @@
 }
 
 .stats-chart {
-    height: 400px !important;
+    background-color: var(--primary-bg-color);
+    height: 450px !important;
     color: var(--primary-font-color);
-    padding: 20px 0;
+    padding: 20px;
+    border-radius: 20px;
 }
 
 .stats-chart-tooltip {
     padding: 10px 15px;
-    background-color: var(--primary-bg-color);
+    background-color: var(--secondary-bg-color);
     border-radius: 20px;
+}
+
+.stats-chart-tooltip-cursor {
+    stroke: transparent !important;
 }

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import "./DevicePage.css";
+import { Switch } from 'antd';
+
 import RealTimeStatistics from "../components/RealTimeStatistics";
+import "./DevicePage.css";
 
 const DevicePage = () => {
   const { deviceId } = useParams();
@@ -27,10 +28,12 @@ const DevicePage = () => {
           setSetChannel2(data.device.currentChannel2);
           setSetChannel3(data.device.currentChannel3);
           setSetChannel4(data.device.currentChannel4);
+          toast.success("Device Data Updated!")
         } else {
-          console.error("Error fetching device data");
+          toast.error("Error Fetching Device Data!");
         }
       } catch (error) {
+        toast.error("Error Fetching Device Data!");
         console.error("Error:", error);
       }
     };
@@ -71,7 +74,7 @@ const DevicePage = () => {
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("Error Sending Instruction");
+      toast.error("Error Sending Instruction!");
     }
   };
 
@@ -151,62 +154,58 @@ const DevicePage = () => {
               </thead>
               <tbody>
                 <tr>
-                  <td>Channel 1</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={setChannel1}
-                        onChange={() => handleSwitchChange("setChannel1")}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </td>
+                    <td>Channel 1</td>
+                    <td>
+                        <Switch 
+                            checked={setChannel1} 
+                            onChange={() => handleSwitchChange("setChannel1")} 
+                            checkedChildren="ON" 
+                            unCheckedChildren="OFF" 
+                            className="slider-switch"
+                        />
+                    </td>
                 </tr>
                 <tr>
-                  <td>Channel 2</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={setChannel2}
-                        onChange={() => handleSwitchChange("setChannel2")}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </td>
+                    <td>Channel 2</td>
+                    <td>
+                        <Switch 
+                            checked={setChannel2} 
+                            onChange={() => handleSwitchChange("setChannel2")} 
+                            checkedChildren="ON" 
+                            unCheckedChildren="OFF" 
+                            className="slider-switch"
+                        />
+                    </td>
                 </tr>
                 <tr>
-                  <td>Channel 3</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={setChannel3}
-                        onChange={() => handleSwitchChange("setChannel3")}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </td>
+                    <td>Channel 3</td>
+                    <td>
+                        <Switch 
+                            checked={setChannel3} 
+                            onChange={() => handleSwitchChange("setChannel3")} 
+                            checkedChildren="ON" 
+                            unCheckedChildren="OFF" 
+                            className="slider-switch"
+                        />
+                    </td>
                 </tr>
                 <tr>
-                  <td>Channel 4</td>
-                  <td>
-                    <label className="switch">
-                      <input
-                        type="checkbox"
-                        checked={setChannel4}
-                        onChange={() => handleSwitchChange("setChannel4")}
-                      />
-                      <span className="slider"></span>
-                    </label>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                    <td>Channel 4</td>
+                    <td>
+                        <Switch 
+                            checked={setChannel4} 
+                            onChange={() => handleSwitchChange("setChannel4")} 
+                            checkedChildren="ON" 
+                            unCheckedChildren="OFF" 
+                            className="slider-switch"
+                        />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
           </div>    
         </div>
-      <ToastContainer />
+      <ToastContainer hideProgressBar autoClose={process.env.REACT_APP_TOAST_DURATION * 1000 || 5000} />
     </div>
   );
 };
