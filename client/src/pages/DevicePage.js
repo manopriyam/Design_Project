@@ -105,116 +105,107 @@ const DevicePage = () => {
 
   return (
     <div className="device-page-container">
-      <h2>Device: {device.deviceId}</h2>
-      <RealTimeStatistics deviceId={device.deviceId}/>
-      <div className="device-layout">
-        <div className="device-stats">
-          <h3>Device Statistics</h3>
-          <table className="device-table">
-            <thead>
-              <tr>
-                <th width="300px">Property</th>
-                <th>Value</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Status</td>
-                <td>{device.isActive ? "Active" : "Inactive"}</td>
-              </tr>
-              <tr>
-                <td>Raspberry Pico</td>
-                <td>{device.isPico ? "Yes" : "No"}</td>
-              </tr>
-              <tr>
-                <td>Total Energy</td>
-                <td>{device.totalEnergy}</td>
-              </tr>
-              <tr>
-                <td>Channel 1</td>
-                <td>{device.currentChannel1 ? "Active" : "Inactive"}</td>
-              </tr>
-              <tr>
-                <td>Channel 2</td>
-                <td>{device.currentChannel2 ? "Active" : "Inactive"}</td>
-              </tr>
-              <tr>
-                <td>Channel 3</td>
-                <td>{device.currentChannel3 ? "Active" : "Inactive"}</td>
-              </tr>
-              <tr>
-                <td>Channel 4</td>
-                <td>{device.currentChannel4 ? "Active" : "Inactive"}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div className="device-controls">
-          <h3>Control Channels</h3>
-          <table className="channel-table">
-            <thead>
-              <tr>
-                <th>Channel</th>
-                <th>Control</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Channel 1</td>
-                <td>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={setChannel1}
-                      onChange={() => handleSwitchChange("setChannel1")}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>
-              </tr>
-              <tr>
-                <td>Channel 2</td>
-                <td>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={setChannel2}
-                      onChange={() => handleSwitchChange("setChannel2")}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>
-              </tr>
-              <tr>
-                <td>Channel 3</td>
-                <td>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={setChannel3}
-                      onChange={() => handleSwitchChange("setChannel3")}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>
-              </tr>
-              <tr>
-                <td>Channel 4</td>
-                <td>
-                  <label className="switch">
-                    <input
-                      type="checkbox"
-                      checked={setChannel4}
-                      onChange={() => handleSwitchChange("setChannel4")}
-                    />
-                    <span className="slider"></span>
-                  </label>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+      <div className="left">
+        <RealTimeStatistics deviceId={device.deviceId}/>
       </div>
+
+      <div className="right">
+        <div className="device-table-container">
+          <h3 className="device-table-header">Device Statistics</h3>
+            <table className="device-table">
+              <thead>
+                <tr>
+                  <th>Property</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Device Name</td>
+                  <td>{device.deviceId}</td>
+                </tr>
+                <tr>
+                  <td>Status</td>
+                  <td>{device.isActive ? "Active" : "Inactive"}</td>
+                </tr>
+                <tr>
+                  <td>Raspberry Pico</td>
+                  <td>{device.isPico ? "Yes" : "No"}</td>
+                </tr>
+                <tr>
+                  <td>Total Energy</td>
+                  <td>{device.totalEnergy}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="channel-table-container">
+            <h3 className="channel-table-header">Control Channels</h3>
+            <table className="channel-table">
+              <thead>
+                <tr>
+                  <th>Channel</th>
+                  <th>Control</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Channel 1</td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={setChannel1}
+                        onChange={() => handleSwitchChange("setChannel1")}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Channel 2</td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={setChannel2}
+                        onChange={() => handleSwitchChange("setChannel2")}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Channel 3</td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={setChannel3}
+                        onChange={() => handleSwitchChange("setChannel3")}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Channel 4</td>
+                  <td>
+                    <label className="switch">
+                      <input
+                        type="checkbox"
+                        checked={setChannel4}
+                        onChange={() => handleSwitchChange("setChannel4")}
+                      />
+                      <span className="slider"></span>
+                    </label>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>    
+        </div>
       <ToastContainer />
     </div>
   );

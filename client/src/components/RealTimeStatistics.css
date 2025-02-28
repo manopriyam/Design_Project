@@ -1,0 +1,25 @@
+.stats-chart-container {
+    width: var(--container-width);
+    /* margin: var(--container-margin); */
+    background: var(--secondary-bg-color);
+    padding: var(--container-padding);
+    border-radius: var(--container-border-radius);
+}
+
+.stats-chart-header {
+    font-size: var(--primary-font-size);
+    color: var(--primary-font-color);
+    text-align: center;
+}
+
+.stats-chart {
+    height: 400px !important;
+    color: var(--primary-font-color);
+    padding: 20px 0;
+}
+
+.stats-chart-tooltip {
+    padding: 10px 15px;
+    background-color: var(--primary-bg-color);
+    border-radius: 20px;
+}

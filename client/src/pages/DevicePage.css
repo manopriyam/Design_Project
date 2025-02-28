@@ -1,134 +1,66 @@
 .device-page-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 30px auto;
-    width: 90%;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(255, 255, 255, 0.1);
-}
+    width: var(--container-width);
+    margin: var(--container-margin);
+    background: var(--secondary-bg-color);
+    padding: var(--container-padding);
+    border-radius: var(--container-border-radius);
 
-.device-layout {
-    display: flex;
+    display:flex; 
+    flex-direction: row;
     justify-content: space-between;
-    width: 100%;
 }
 
-.device-stats, .device-controls {
-    padding: 20px;
-}
-
-.device-stats {
-    width: 66%;
-}
-
-.device-controls {
-    width: 33%;
-    display: flex;
+.left {
+    width: 700px;
+    display:flex; 
     flex-direction: column;
-    gap: 15px;
-    align-items: center;
+    justify-content: space-between;
 }
 
-.device-stats h3, .device-controls h3 {
-    margin-bottom: 15px;
+.right {
+    width: 600px;
+    display:flex; 
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.device-table-container, .channel-table-container {
+    width: var(--container-width);
+    /* margin: var(--container-margin); */
+    background: var(--secondary-bg-color);
+    padding: var(--container-padding);
+    border-radius: var(--container-border-radius);
+}
+
+.device-table-header, .channel-table-header {
+    font-size: var(--primary-font-size);
+    color: var(--primary-font-color);
     text-align: center;
 }
 
 .device-table, .channel-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    background: rgba(0, 0, 0, 0.2);
-}
-
-.device-table th, .device-table td, .channel-table th, .channel-table td {
-    padding: 12px 10px;
-    text-align: center;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+  width: 100%;
+  border-collapse: collapse;
 }
 
 .device-table th, .channel-table th {
-    background: linear-gradient(90deg, #444, #666);
-    color: white;
+  border: var(--table-cell-border);
+  border-radius: var(--table-cell-border-radius);
+  padding: var(--table-cell-padding);
+  height: var(--table-header-row-height);
+  background-color: var(--table-header-color);
+  font-size: var(--secondary-font-size);
+  color: var(--secondary-font-color);
+  text-align: center;
 }
 
-.device-table tr:nth-child(even), .channel-table tr:nth-child(even) {
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.device-table tr:hover, .channel-table tr:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transition: 0.3s ease-in-out;
-}
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    margin: 0px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 50px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    border-radius: 50px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-}
-
-input:checked + .slider {
-    background-color: #4caf50;
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-.slider:hover {
-    background-color: #a3a3a3;
-}
-
-button, .instruction-btn {
-    background: linear-gradient(90deg, #ff0077, #ff3d00);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-    margin-top: 20px;
-    width: 200px;
-    text-align: center;
-}
-
-button:hover, .instruction-btn:hover {
-    background: linear-gradient(90deg, #ff3d00, #ff0077);
-    box-shadow: 0 0 10px rgba(255, 61, 0, 0.6);
+.device-table td, .channel-table td {
+  border: var(--table-cell-border);
+  border-radius: var(--table-cell-border-radius);
+  padding: var(--table-cell-padding);
+  height: var(--table-cell-row-height);
+  background-color: var(--table-cell-color);
+  font-size: var(--tertiary-font-size);
+  color: var(--tertiary-font-color);
+  text-align: center;
 }

@@ -28,9 +28,9 @@ const ActiveDevicesList = () => {
   }, []);
 
   return (
-    <div className="device-table-container">
-      <h2>Active Devices</h2>
-      <table className="device-table">
+    <div className="active-device-table-container">
+      <h2 className="active-device-table-header">List of Active Devices</h2>
+      <table className="active-device-table">
         <thead>
           <tr>
             <th>Device ID</th>
