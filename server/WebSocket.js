@@ -26,7 +26,21 @@ const WebSocket = (server) => {
                 ws.deviceId = data.deviceId;
 
                 deviceConnections.set(ws.deviceId, ws);
-        
+
+                if (data.pir !== undefined) {
+                    const lastEntry = await dataModel
+                        .findOne({ deviceId: data.deviceId })
+                        .sort({ createdAt: -1 });
+
+                    const lastPir = lastEntry?.pir?.value ?? null;
+
+                    data.pir = {
+                        value: data.pir,
+                        lastChanged:
+                            lastPir !== data.pir ? new Date() : lastEntry?.pir?.lastChanged,
+                    };
+                }
+
                 const newData = new dataModel(data);
                 await newData.save();
                 console.log("New Device Data Added:\n", newData);
@@ -41,7 +55,11 @@ const WebSocket = (server) => {
                         currentChannel3: data.channel3,
                         currentChannel4: data.channel4,
                         isPico: true,
-                        isActive: true
+                        isActive: true,
+                        pir: {
+                            value: data.pir.value,
+                            lastChanged: data.pir.lastChanged,
+                        },
                     },
                     { new: true, upsert: true }
                 );
@@ -74,7 +92,9 @@ const WebSocket = (server) => {
         wss.clients.forEach(async (ws) => {
             if (ws.isAlive === false) {
                 deviceConnections.delete(ws.deviceId);
-                console.log(`Closing Inactive Connection for Device ID (Current Connections Check): ${ws.deviceId}`);
+                console.log(
+                    `Closing Inactive Connection for Device ID (Current Connections Check): ${ws.deviceId}`
+                );
                 await deviceModel.findOneAndUpdate(
                     { deviceId: ws.deviceId },
                     { isActive: false },
@@ -97,7 +117,9 @@ const WebSocket = (server) => {
                     { isActive: false },
                     { new: true }
                 );
-                console.log(`Closing Inactive Connection for Device ID (All Devices Check): ${device.deviceId}`);
+                console.log(
+                    `Closing Inactive Connection for Device ID (All Devices Check): ${device.deviceId}`
+                );
             }
         });
     }, process.env.DEVICE_ACTIVITY_CHECK_INTERVAL * 1000 || 15000);

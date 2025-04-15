@@ -1,42 +1,49 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const deviceSchema = new mongoose.Schema({
-    deviceId: {
-        type: String,
-        required: true,
-        trim: true,
-        unique: true,
+const deviceSchema = new mongoose.Schema(
+    {
+        deviceId: {
+            type: String,
+            required: true,
+            trim: true,
+            unique: true,
+        },
+        totalEnergy: {
+            type: Number,
+            required: true,
+        },
+        currentChannel1: {
+            type: Boolean,
+            required: true,
+        },
+        currentChannel2: {
+            type: Boolean,
+            required: true,
+        },
+        currentChannel3: {
+            type: Boolean,
+            required: true,
+        },
+        currentChannel4: {
+            type: Boolean,
+            required: true,
+        },
+        isPico: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        isActive: {
+            type: Boolean,
+            required: true,
+        },
+        pir: {
+            value: { type: Boolean, required: true, default: false },
+            lastChanged: { type: Date, default: null },
+        },
     },
-    totalEnergy: {
-        type: Number,
-        required: true,
-    },
-    currentChannel1: {
-        type: Boolean,
-        required: true,
-    },
-    currentChannel2: {
-        type: Boolean,
-        required: true,
-    },
-    currentChannel3: {
-        type: Boolean,
-        required: true,
-    },
-    currentChannel4: {
-        type: Boolean,
-        required: true,
-    },
-    isPico: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    isActive: {
-        type: Boolean,
-        required: true,
-    },
-}, { timestamps: true }); 
+    { timestamps: true }
+);
 
 // Exporting the model created from the schema
-export default mongoose.model('device', deviceSchema);
+export default mongoose.model("device", deviceSchema);
