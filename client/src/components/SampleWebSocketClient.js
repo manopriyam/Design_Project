@@ -1,3 +1,4 @@
+import fs from "fs";
 import React, { useEffect, useState, useRef } from "react";
 
 const WebSocketClient = () => {
@@ -13,14 +14,7 @@ const WebSocketClient = () => {
     socketRef.current.onopen = () => {
       console.log("Connected to WebSocket Server");
 
-      const data = {
-        "deviceId": "abc",
-        "energy": 320,
-        "channel1": false,
-        "channel2": true,
-        "channel3": true,
-        "channel4": true,
-      };
+      const data = JSON.parse(fs.readFileSync("./sampleJSONRequest.json", "utf-8"));
 
       socketRef.current.send(JSON.stringify(data));
       console.log("Sent:", JSON.stringify(data));

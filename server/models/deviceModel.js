@@ -37,13 +37,18 @@ const deviceSchema = new mongoose.Schema(
             type: Boolean,
             required: true,
         },
-        pir: {
-            value: { type: Boolean, required: true, default: false },
-            lastChanged: { type: Date, default: null },
+        pirValue: {
+            type: Boolean,
+            required: true,
+            default: false,
+        },
+        pirLastChanged: {
+            type: Date,
+            default: null,
         },
     },
     { timestamps: true }
 );
 
 // Exporting the model created from the schema
-export default mongoose.model("device2", deviceSchema);
+export default mongoose.model("device", deviceSchema);

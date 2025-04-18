@@ -1,5 +1,13 @@
 # Design Project
 
+## Server & Client URLs : <br>
+
+- **HTTPS Server:** https://design-project-rgml.onrender.com  
+- **WebSocket Server:** wss://design-project-rgml.onrender.com  
+- **Frontend Client:** https://design-project-omega.vercel.app/
+
+<br>
+
 ## Tech Stack Used : <br>
 - ReactJS <br>
 - NodeJs <br>

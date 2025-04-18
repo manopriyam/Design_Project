@@ -10,7 +10,7 @@ const WebSocket = (server) => {
     wss.on("connection", (ws) => {
         console.log("New WebSocket Client Connected.");
         console.log(`Currently Connected : ${wss.clients.size} Clients`);
-
+        
         ws.isAlive = true;
 
         ws.on("pong", () => {
@@ -25,23 +25,16 @@ const WebSocket = (server) => {
                 const data = JSON.parse(textMessage);
                 ws.deviceId = data.deviceId;
 
-                console.log("Text Message Received: \n", textMessage);
                 console.log("JSON Data Received:\n", data);
-
                 deviceConnections.set(ws.deviceId, ws);
 
-                if (data.pir !== undefined) {
-                    const lastEntry = await dataModel
-                        .findOne({ deviceId: data.deviceId })
-                        .sort({ createdAt: -1 });
+                const lastEntry = await dataModel
+                    .findOne({ deviceId: data.deviceId })
+                    .sort({ createdAt: -1 });
 
-                    const lastPir = lastEntry?.pir?.value ?? null;
-
-                    data.pir = {
-                        value: data.pir,
-                        lastChanged:
-                            lastPir !== data.pir ? new Date() : lastEntry?.pir?.lastChanged,
-                    };
+                const updatePIR = (!lastEntry) || (lastEntry.pirValue != data.pirValue);
+                if (updatePIR) {
+                    data.pirLastChanged = new Date();
                 }
 
                 const newData = new dataModel(data);
@@ -59,14 +52,11 @@ const WebSocket = (server) => {
                         currentChannel4: data.channel4,
                         isPico: true,
                         isActive: true,
-                        pir: {
-                            value: data.pir.value,
-                            lastChanged: data.pir.lastChanged,
-                        },
+                        pirValue: data.pirValue,
+                        pirLastChanged: data.pirLastChanged
                     },
                     { new: true, upsert: true }
                 );
-
                 console.log("Device Status Updated:\n", updatedDevice);
                 ws.send(`Device Status Updated: ${JSON.stringify(updatedDevice)}`);
             } catch (error) {
@@ -92,6 +82,11 @@ const WebSocket = (server) => {
     });
 
     setInterval(async () => {
+        console.log("Currently Active Client IDs: ");
+        deviceConnections.forEach((client, deviceId) => {
+            console.log("Client ID: ", deviceId);
+        });
+        
         wss.clients.forEach(async (ws) => {
             if (ws.isAlive === false) {
                 deviceConnections.delete(ws.deviceId);
