@@ -38,4 +38,4 @@ const dataSchema = new mongoose.Schema(
 );
 
 // Exporting the model created from the schema
-export default mongoose.model("data", dataSchema);
+export default mongoose.model("data2", dataSchema);

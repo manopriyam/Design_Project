@@ -4,6 +4,9 @@ import axios from "axios";
 import { ToastContainer, toast } from 'react-toastify';
 import { Switch } from 'antd';
 
+// import WeeklyEnergyGraph from "../components/WeeklyEnergyGraph";
+
+
 import RealTimeStatistics from "../components/RealTimeStatistics";
 import "./DevicePage.css";
 
@@ -205,6 +208,8 @@ const DevicePage = () => {
               </table>
           </div>    
         </div>
+        {/* this line  */}
+        {/* <WeeklyEnergyGraph deviceId={device.deviceId} /> */}
       <ToastContainer hideProgressBar autoClose={process.env.REACT_APP_TOAST_DURATION * 1000 || 5000} />
     </div>
   );
