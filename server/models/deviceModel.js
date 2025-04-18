@@ -46,4 +46,4 @@ const deviceSchema = new mongoose.Schema(
 );
 
 // Exporting the model created from the schema
-export default mongoose.model("device", deviceSchema);
+export default mongoose.model("device2", deviceSchema);
