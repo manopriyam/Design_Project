@@ -25,6 +25,9 @@ const WebSocket = (server) => {
                 const data = JSON.parse(textMessage);
                 ws.deviceId = data.deviceId;
 
+                console.log("Text Message Received: \n", textMessage);
+                console.log("JSON Data Received:\n", data);
+
                 deviceConnections.set(ws.deviceId, ws);
 
                 if (data.pir !== undefined) {
