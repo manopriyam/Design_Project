@@ -1,6 +1,7 @@
 import { WebSocketServer } from "ws";
 import deviceModel from "./models/deviceModel.js";
 import dataModel from "./models/dataModel.js";
+import fetchUpdates from "./fetchUpdates.js";
 
 const deviceConnections = new Map();
 
@@ -10,7 +11,7 @@ const WebSocket = (server) => {
     wss.on("connection", (ws) => {
         console.log("New WebSocket Client Connected.");
         console.log(`Currently Connected : ${wss.clients.size} Clients`);
-        
+
         ws.isAlive = true;
 
         ws.on("pong", () => {
@@ -32,15 +33,16 @@ const WebSocket = (server) => {
                     .findOne({ deviceId: data.deviceId })
                     .sort({ createdAt: -1 });
 
-                const updatePIR = (!lastEntry) || (lastEntry.pirValue != data.pirValue);
+                const updatePIR = !lastEntry || lastEntry.pirValue != data.pirValue;
                 if (updatePIR) {
                     data.pirLastChanged = new Date();
                 }
 
                 const newData = new dataModel(data);
+                newData.pirValue = data.pirValue;
                 await newData.save();
                 console.log("New Device Data Added:\n", newData);
-                ws.send(`New Device Data Added: ${JSON.stringify(data)}`);
+                ws.send(`New Device Data Added: ${JSON.stringify(newData)}`);
 
                 const updatedDevice = await deviceModel.findOneAndUpdate(
                     { deviceId: data.deviceId },
@@ -53,7 +55,7 @@ const WebSocket = (server) => {
                         isPico: true,
                         isActive: true,
                         pirValue: data.pirValue,
-                        pirLastChanged: data.pirLastChanged
+                        pirLastChanged: data.pirLastChanged,
                     },
                     { new: true, upsert: true }
                 );
@@ -81,46 +83,9 @@ const WebSocket = (server) => {
         ws.send("Client Successfully Connected to the Server!");
     });
 
-    setInterval(async () => {
-        console.log("Currently Active Client IDs: ");
-        deviceConnections.forEach((client, deviceId) => {
-            console.log("Client ID: ", deviceId);
-        });
-        
-        wss.clients.forEach(async (ws) => {
-            if (ws.isAlive === false) {
-                deviceConnections.delete(ws.deviceId);
-                console.log(
-                    `Closing Inactive Connection for Device ID (Current Connections Check): ${ws.deviceId}`
-                );
-                await deviceModel.findOneAndUpdate(
-                    { deviceId: ws.deviceId },
-                    { isActive: false },
-                    { new: true }
-                );
-                return ws.terminate();
-            }
-
-            ws.isAlive = false;
-            console.log("Pinging Device: ", ws.deviceId);
-            ws.ping();
-        });
-
-        const activeDevices = await deviceModel.find({ isActive: true });
-        activeDevices.forEach(async (device) => {
-            const connectedClient = [...wss.clients].find((ws) => ws.deviceId === device.deviceId);
-            if (!connectedClient) {
-                await deviceModel.findOneAndUpdate(
-                    { deviceId: device.deviceId },
-                    { isActive: false },
-                    { new: true }
-                );
-                console.log(
-                    `Closing Inactive Connection for Device ID (All Devices Check): ${device.deviceId}`
-                );
-            }
-        });
-    }, process.env.DEVICE_ACTIVITY_CHECK_INTERVAL * 1000 || 15000);
+    setInterval(() => {
+        fetchUpdates(wss);
+    }, process.env.FETCH_UPDATES_INTERVAL * 1000 || 15000);
 };
 
 export { WebSocket, deviceConnections };
