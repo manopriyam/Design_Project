@@ -32,13 +32,13 @@ const handleInactiveConnections = async (wss) => {
                 { isActive: false },
                 { new: true }
             );
+            deviceConnections.delete(device.deviceId);
             console.log(
                 `Closing Inactive Connection for Device ID (All Devices Check): ${device.deviceId}`
             );
         }
     });
 
-    console.log("Disconnecting Undefined Client IDs: ");
     let undefined = 0;
     for (const ws of wss.clients) {
         if (!ws.deviceId) {
@@ -64,7 +64,7 @@ const handleInactivePIRDevices = async (wss) => {
         pirValue: false,
         pirLastChanged: { $exists: true, $ne: null, $lte: cutoff },
     });
-    console.log("Inactive Devices: ", inactiveDevices);
+    console.log(`Inactive Devices with pirLastChanged <= ${cutoff}: `, inactiveDevices);
 
     for (const device of inactiveDevices) {
         const ws = deviceConnections.get(device.deviceId);
