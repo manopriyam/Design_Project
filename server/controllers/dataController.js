@@ -36,19 +36,6 @@ export const sendDataController = async (req, res) => {
     try {
         const received = req.body;
 
-        if (received.pir !== undefined) {
-            const lastEntry = await dataModel
-                .findOne({ deviceId: received.deviceId })
-                .sort({ createdAt: -1 });
-
-            const lastPir = lastEntry?.pir?.value ?? null;
-
-            received.pir = {
-                value: received.pir,
-                lastChanged: lastPir !== received.pir ? new Date() : lastEntry?.pir?.lastChanged,
-            };
-        }
-
         const deviceData = new dataModel(received);
         await deviceData.save();
 

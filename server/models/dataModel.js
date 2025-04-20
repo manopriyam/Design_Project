@@ -33,11 +33,7 @@ const dataSchema = new mongoose.Schema(
             type: Boolean,
             required: true,
             default: false,
-        },
-        pirLastChanged: {
-            type: Date,
-            default: null,
-        },
+        }
     },
     { timestamps: true }
 );

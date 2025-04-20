@@ -38,6 +38,16 @@ const handleInactiveConnections = async (wss) => {
         }
     });
 
+    console.log("Disconnecting Undefined Client IDs: ");
+    let undefined = 0;
+    for (const ws of wss.clients) {
+        if (!ws.deviceId) {
+            undefined++;
+            ws.terminate();
+        }
+    }
+    console.log(`Disconnected ${undefined} Undefined Client IDs.`);
+
     console.log("Currently Active Client IDs: ", wss.clients.size);
     deviceConnections.forEach((client, deviceId) => {
         console.log("Client ID: ", deviceId);

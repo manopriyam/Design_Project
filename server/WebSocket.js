@@ -29,6 +29,11 @@ const WebSocket = (server) => {
                 console.log("JSON Data Received:\n", data);
                 deviceConnections.set(ws.deviceId, ws);
 
+                const newData = new dataModel(data);
+                await newData.save();
+                console.log("New Device Data Added:\n", newData);
+                ws.send(`New Device Data Added: ${JSON.stringify(newData)}`);
+
                 const lastEntry = await dataModel
                     .findOne({ deviceId: data.deviceId })
                     .sort({ createdAt: -1 });
@@ -37,13 +42,7 @@ const WebSocket = (server) => {
                 if (updatePIR) {
                     data.pirLastChanged = new Date();
                 }
-
-                const newData = new dataModel(data);
-                newData.pirValue = data.pirValue;
-                await newData.save();
-                console.log("New Device Data Added:\n", newData);
-                ws.send(`New Device Data Added: ${JSON.stringify(newData)}`);
-
+                
                 const updatedDevice = await deviceModel.findOneAndUpdate(
                     { deviceId: data.deviceId },
                     {
@@ -81,6 +80,7 @@ const WebSocket = (server) => {
         });
 
         ws.send("Client Successfully Connected to the Server!");
+        ws.send(`Note: You must send data to the Web Socket Server at intervals of less than ${process.env.FETCH_UPDATES_INTERVAL} seconds, to prevent disconnection.`);
     });
 
     setInterval(() => {
