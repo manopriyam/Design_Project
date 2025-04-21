@@ -59,6 +59,7 @@ p/SgguMh1YQdc4acLa/KNJvxn7kjNuK8YAOdgLOaVsjh4rsUecrNIdSUtUlD
 
 WebsocketsClient client;
 unsigned long lastSendTime = 0;
+unsigned long lastSendTimeServer=0;
 
 // GPIO pin mappings for channels
 const int channelPins[] = {4, 0, 2, 15}; //16->1
@@ -137,6 +138,7 @@ void setup()
   Serial.print("Connecting to WebSocket server...");
   if (client.connect(websocketServer)) {
     Serial.println("Connected!");
+    sendJson();
   } else {
     Serial.println("Failed to connect to WebSocket server");
   }
@@ -146,7 +148,7 @@ void setup()
   digitalWrite(15, HIGH); // Initialize all channels as OFF
 
 
-  delay(1000);
+  // delay(1000);
 }
 
 void loop() {
@@ -177,9 +179,9 @@ void loop() {
 
   
 
-  if (millis() - lastSendTime > 60000) { // Send JSON every 1 minute
+  if (millis() - lastSendTimeServer > 10000) { // Send JSON every 1 minute
     sendJson();
-    lastSendTime = millis();
+    lastSendTimeServer = millis();
   }
 }
 
@@ -252,9 +254,9 @@ void readEnergy() {
 
 
   // Print the readings in a clear format
-  Serial.print("Total Energy: ");
-  Serial.print(energy, 2);
-  Serial.println(" kWh");
+  // Serial.print("Total Energy: ");
+  // Serial.print(energy, 2);
+  // Serial.println(" kWh");
   // delay(1000);
 }
 
@@ -263,6 +265,7 @@ void checkWebSocketConnection() {
     Serial.println("WebSocket disconnected. Reconnecting...");
     delay(2000);
     if (client.connect(websocketServer)) {
+      sendJson();
       Serial.println("Reconnected to WebSocket!");
     } else {
       Serial.println("WebSocket reconnection failed.");
