@@ -99,11 +99,54 @@ const handleInactivePIRDevices = async (wss) => {
     }
 };
 
+const handleActivePIRDevices = async (wss) => {
+
+    const activeDevices = await deviceModel.find({
+        isActive: true,
+        pirValue: true,
+    });
+
+    console.log(`Active Devices with pirValue = true: `, activeDevices);
+
+    for (const device of activeDevices) {
+        const ws = deviceConnections.get(device.deviceId);
+
+        if (ws && ws.readyState === ws.OPEN) {
+            console.log(
+                `Device ${device.deviceId} has been turned active. Setting all channels to true.`
+            );
+
+            const instruction = {
+                deviceId: device.deviceId,
+                setChannel1: true,
+                setChannel2: true,
+                setChannel3: true,
+                setChannel4: true,
+            };
+
+            try {
+                const response = await axios.post(
+                    `http://localhost:${process.env.PORT || 3000}/api/device/instruction`,
+                    instruction
+                );
+                if (response.data.success) {
+                    console.log("Instruction Sent Successfully!");
+                } else {
+                    console.error("Failed to Send Instruction!");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+    }
+};
+
 const fetchUpdates = async (wss) => {
     console.log("Fetching Updates...");
     try {
         await handleInactiveConnections(wss);
         await handleInactivePIRDevices(wss);
+        await handleActivePIRDevices(wss);
     } catch (error) {
         console.error("Error in Fetching Updates:", error);
     }
