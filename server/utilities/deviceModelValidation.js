@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 import dataModel from "../models/dataModel.js";
 import deviceModel from "../models/deviceModel.js";
 
-const MONGODB_URL =
-    "mongodb+srv://manopriyam:MygzbANmpiuL65Zd@designproject.jyl5g.mongodb.net/DesignProjectDB";
-
-// const MONGODB_URL =
-//     "mongodb+srv://manopriyam:MygzbANmpiuL65Zd@designproject.jyl5g.mongodb.net/DesignProjectDB_Dummy";
+const MONGODB_URL = process.env.MONGODB_URL;
 
 // Connect to the database
 console.log("Connecting to MongoDB Database:", MONGODB_URL);
